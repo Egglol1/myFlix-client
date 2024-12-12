@@ -2485,14 +2485,14 @@ process.umask = function() {
     return 0;
 };
 
-},{}],"QEIFU":[function(require,module,exports,__globalThis) {
+},{}],"jHTfH":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
 var HMR_USE_SSE = false;
-module.bundle.HMR_BUNDLE_ID = "10485a0f0d6fcb10";
+module.bundle.HMR_BUNDLE_ID = "022c1b16b4b6dfad";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -31137,6 +31137,6 @@ $RefreshReg$(_c, "SignupView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"8ikLq","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"19GoP"}],"i5LP7":[function() {},{}],"lJZlQ":[function() {},{}]},["jwxKH","QEIFU","d8Dch"], "d8Dch", "parcelRequire94c2")
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"8ikLq","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"19GoP"}],"i5LP7":[function() {},{}],"lJZlQ":[function() {},{}]},["jwxKH","jHTfH","d8Dch"], "d8Dch", "parcelRequire94c2")
 
-//# sourceMappingURL=index.0d6fcb10.js.map
+//# sourceMappingURL=index.b4b6dfad.js.map
