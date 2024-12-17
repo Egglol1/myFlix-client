@@ -1,4 +1,6 @@
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export const SignupView = () => {
   const [username, setUsername] = useState("");
@@ -16,11 +18,12 @@ export const SignupView = () => {
       Birthday: birthday
     };
 
-    fetch("https://movie-api-x3ci.onrender.com/register", {
+    fetch("https://movie-api-x3ci.onrender.com/user", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "http://localhost:1234"
       }
     }).then((response) => {
       if (response.ok) {
