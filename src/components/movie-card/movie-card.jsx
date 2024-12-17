@@ -5,7 +5,14 @@ import { Link } from "react-router-dom";
 
 import "./movie-card.scss";
 
-export const MovieCard = ({ movie }) => {
+export const MovieCard = ({ movie, isFavorite, onFavoriteToggle }) => {
+  const [isFav, setIsFav] = useState(isFavorite);
+
+  const handleFavoriteClick = () => {
+    setIsFav(prev => !prev);
+    onFavoriteToggle(movie.id, !isFav);
+  };
+
   return (
     <Card className="h-100">
       <Card.Img variant="top" src={movie.image} />
@@ -15,6 +22,12 @@ export const MovieCard = ({ movie }) => {
         <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
           <Button variant="link">Open</Button>
         </Link>
+        <Button
+          variant={isFav ? "danger" : "secondary"}
+          onClick={handleFavoriteClick}
+        >
+          {isFav ? "Unfavorite" : "Favorite"}
+        </Button>
       </Card.Body>
     </Card>
   );
@@ -25,5 +38,7 @@ MovieCard.propTypes = {
     title: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     director: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  isFavorite: PropTypes.bool.isRequired,
+  onFavoriteToggler: PropTypes.func.isRequired
 };
