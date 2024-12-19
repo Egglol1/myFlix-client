@@ -27,6 +27,7 @@ export const MainView = () => {
           return {
             id: doc._id,
             title: doc.Title,
+            description: doc.Description,
             image: `${doc.ImagePath}`,
             director: doc.Director.Name,
           };
@@ -40,11 +41,11 @@ export const MainView = () => {
       <Row>
         {!user ? (
           <Col md={5}>
-            <LoginView onLoggedIn={(user) => setUser(user)}/>
-              or
-            <SignupView/>
+            <LoginView onLoggedIn={(user) => setUser(user)} />
+            or
+            <SignupView />
           </Col>
-        ) : selectedMovie? (
+        ) : selectedMovie ? (
           <Col md={8}>
             <MovieView
             movie={selectedMovie}
