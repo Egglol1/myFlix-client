@@ -1,3 +1,4 @@
+import { string } from 'prop-types';
 import {useState, React} from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -5,6 +6,7 @@ import Form from "react-bootstrap/Form";
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const handleSubmit = (event) => {
     //this prevents the default behavior of the form which is to reload the entire page
     event.preventDefault();
@@ -12,6 +14,7 @@ export const LoginView = ({ onLoggedIn }) => {
     const data = {
       Username: username,
       Password: password,
+      Email: email,
     };
 
     fetch("https://movie-api-x3ci.onrender.com/user", {
@@ -33,6 +36,7 @@ export const LoginView = ({ onLoggedIn }) => {
     })
     .catch((e) => {
       alert("Something went wrong.");
+      console.log("Error: ", e)
     })
   };
 
@@ -55,6 +59,16 @@ export const LoginView = ({ onLoggedIn }) => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </Form.Group>
+
+      <Form.Group controlId="formEmail">
+        <Form.Label>Email:</Form.Label>
+        <Form.Control
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
       </Form.Group>
