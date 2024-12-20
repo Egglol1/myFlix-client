@@ -12,18 +12,19 @@ export const LoginView = ({ onLoggedIn }) => {
 
     const data = {
       Username: username,
-      Password: password,
+      Password: password
     };
 
-    fetch("https://movie-api-x3ci.onrender.com/user", {
+    fetch("https://movie-api-x3ci.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
-    }).then((response) => {
-      console.log("Login response: ", data, "/n Response :", response);
-      if (response.ok) {
+    }).then((response) => response.json())
+      .then((data) => {
+      console.log("Login response: ", data, "Response :", response);
+      if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
         onLoggedIn(data.user, data.token);
