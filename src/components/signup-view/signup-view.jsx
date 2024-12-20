@@ -22,10 +22,10 @@ export const SignupView = () => {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:1234"
+        "Content-Type": "application/json"
       }
     }).then((response) => {
+      console.log("Response: ", response)
       if (response.ok) {
         alert("Signup successful");
         window.location.reload();
