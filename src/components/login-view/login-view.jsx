@@ -1,4 +1,3 @@
-import { string } from 'prop-types';
 import {useState, React} from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,7 +5,7 @@ import Form from "react-bootstrap/Form";
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+
   const handleSubmit = (event) => {
     //this prevents the default behavior of the form which is to reload the entire page
     event.preventDefault();
@@ -14,7 +13,6 @@ export const LoginView = ({ onLoggedIn }) => {
     const data = {
       Username: username,
       Password: password,
-      Email: email,
     };
 
     fetch("https://movie-api-x3ci.onrender.com/user", {
@@ -23,15 +21,14 @@ export const LoginView = ({ onLoggedIn }) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
-    }).then((response) => response.json())
-    .then((data) => {
-      console.log("Login response: ", data);
-      if (data.user) {
+    }).then((response) => {
+      console.log("Login response: ", data, "/n Response :", response);
+      if (response.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
         onLoggedIn(data.user, data.token);
       } else {
-        alert("No such user");
+        alert("Login failed");
       }
     })
     .catch((e) => {
@@ -59,16 +56,6 @@ export const LoginView = ({ onLoggedIn }) => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formEmail">
-        <Form.Label>Email:</Form.Label>
-        <Form.Control
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           required
         />
       </Form.Group>
