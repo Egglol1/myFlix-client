@@ -25,6 +25,7 @@ export const MainView = () => {
       headers: {Authorization: `Bearer ${token}`}
     })
       .then((response) => response.json())
+      console.log(response)
       .then((data) => {
         console.log(data)
         const moviesFromApi = data.map((movie) => {
@@ -56,8 +57,15 @@ export const MainView = () => {
             onBackClick={() => setSelectedMovie(null)}
             />
           </Col>
+        ) : (movies.length === 0) ? (
+          <Col>
+          The list is empty!
+          </Col>
         ) : (
           <>
+          <Col xs={12}>
+            <h1>Movie List!</h1>
+          </Col>
           {movies.map((movie) => (
             <Col className="mb-5" key={movie.id} md={3}>
               <MovieCard
