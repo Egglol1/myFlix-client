@@ -8,12 +8,15 @@ import Row from 'react-bootstrap/Row';
 
 export const MainView = () => {
   console.log(localStorage.getItem("user"));
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const storedToken = localStorage.getItem("token");
+//  const storedUser = JSON.parse(localStorage.getItem("user"));
+//  const storedToken = localStorage.getItem("token");
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [user, setUser] = useState(storedUser? storedUser : null);
-  const [token, setToken] = useState(storedToken? storedToken : null);
+//  const [user, setUser] = useState(storedUser);
+//  const [token, setToken] = useState(storedToken);
+
+  const [user, setUser] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     if (!token) return;
