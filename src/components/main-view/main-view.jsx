@@ -24,13 +24,13 @@ export const MainView = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
-        const moviesFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data.map((movie) => {
           return {
-            id: doc._id,
-            title: doc.Title,
-            description: doc.Description,
-            image: `${doc.ImagePath}`,
-            director: doc.Director.Name,
+            id: movie._id,
+            title: movie.Title,
+            description: movie.Description,
+            image: `${movie.ImagePath}`,
+            director: movie.Director.Name,
           };
         });
 
