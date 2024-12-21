@@ -8,15 +8,12 @@ import Row from 'react-bootstrap/Row';
 
 export const MainView = () => {
   console.log(localStorage.getItem("user"));
-//  const storedUser = JSON.parse(localStorage.getItem("user"));
-//  const storedToken = localStorage.getItem("token");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedToken = localStorage.getItem("token");
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-//  const [user, setUser] = useState(storedUser);
-//  const [token, setToken] = useState(storedToken);
-
-  const [user, setUser] = useState("");
-  const [token, setToken] = useState("");
+  const [user, setUser] = useState(storedUser);
+  const [token, setToken] = useState(storedToken);
 
   useEffect(() => {
     if (!token) return;
@@ -25,7 +22,6 @@ export const MainView = () => {
       headers: {Authorization: `Bearer ${token}`}
     })
       .then((response) => response.json())
-      console.log(response)
       .then((data) => {
         console.log(data)
         const moviesFromApi = data.map((movie) => {
