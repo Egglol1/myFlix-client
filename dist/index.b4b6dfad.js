@@ -27253,23 +27253,19 @@ var _s = $RefreshSig$();
 const MainView = ()=>{
     _s();
     console.log(localStorage.getItem("user"));
-    //  const storedUser = JSON.parse(localStorage.getItem("user"));
-    //  const storedToken = localStorage.getItem("token");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const storedToken = localStorage.getItem("token");
     const [movies, setMovies] = (0, _react.useState)([]);
     const [selectedMovie, setSelectedMovie] = (0, _react.useState)(null);
-    //  const [user, setUser] = useState(storedUser);
-    //  const [token, setToken] = useState(storedToken);
-    const [user, setUser] = (0, _react.useState)("");
-    const [token, setToken] = (0, _react.useState)("");
+    const [user, setUser] = (0, _react.useState)(storedUser);
+    const [token, setToken] = (0, _react.useState)(storedToken);
     (0, _react.useEffect)(()=>{
-        if (!token) return console.log("BLANK");
-        console.log("NOT RETURNING BLANK");
+        if (!token) return;
         fetch("https://movie-api-x3ci.onrender.com/movies", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-        }).then((response1)=>response1.json());
-        console.log(response).then((data)=>{
+        }).then((response)=>response.json()).then((data)=>{
             console.log(data);
             const moviesFromApi = data.map((movie)=>{
                 return {
@@ -27294,19 +27290,19 @@ const MainView = ()=>{
                         onLoggedIn: (user)=>setUser(user)
                     }, void 0, false, {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 50,
+                        lineNumber: 45,
                         columnNumber: 13
                     }, undefined),
                     "or",
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _signupView.SignupView), {}, void 0, false, {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 52,
+                        lineNumber: 47,
                         columnNumber: 13
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 49,
+                lineNumber: 44,
                 columnNumber: 11
             }, undefined) : selectedMovie ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _colDefault.default), {
                 md: 8,
@@ -27315,18 +27311,18 @@ const MainView = ()=>{
                     onBackClick: ()=>setSelectedMovie(null)
                 }, void 0, false, {
                     fileName: "src/components/main-view/main-view.jsx",
-                    lineNumber: 56,
+                    lineNumber: 51,
                     columnNumber: 13
                 }, undefined)
             }, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 55,
+                lineNumber: 50,
                 columnNumber: 11
             }, undefined) : movies.length === 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _colDefault.default), {
                 children: "The list is empty!"
             }, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 62,
+                lineNumber: 57,
                 columnNumber: 11
             }, undefined) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
                 children: [
@@ -27336,12 +27332,12 @@ const MainView = ()=>{
                             children: "Movie List!"
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 68,
+                            lineNumber: 63,
                             columnNumber: 13
                         }, undefined)
                     }, void 0, false, {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 67,
+                        lineNumber: 62,
                         columnNumber: 11
                     }, undefined),
                     movies.map((movie)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _colDefault.default), {
@@ -27354,12 +27350,12 @@ const MainView = ()=>{
                                 }
                             }, movie.id, false, {
                                 fileName: "src/components/main-view/main-view.jsx",
-                                lineNumber: 72,
+                                lineNumber: 67,
                                 columnNumber: 15
                             }, undefined)
                         }, movie.id, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 71,
+                            lineNumber: 66,
                             columnNumber: 13
                         }, undefined))
                 ]
@@ -27373,17 +27369,17 @@ const MainView = ()=>{
                 children: "Logout"
             }, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 83,
+                lineNumber: 78,
                 columnNumber: 9
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 47,
+        lineNumber: 42,
         columnNumber: 7
     }, undefined);
 };
-_s(MainView, "GDL5hZC6redRqATK8gTGJ22liEA=");
+_s(MainView, "jQgf/MbZz4a1yLVAaD+q2MFDePw=");
 _c = MainView;
 var _c;
 $RefreshReg$(_c, "MainView");
