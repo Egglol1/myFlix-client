@@ -41,9 +41,6 @@ export const NavigationBar = ({user, onLoggedOut}) => {
                 >
                   Profile
                 </Nav.Link>
-                <Nav.Link as={Link} to={`/user/${encodeURIComponent(user.Username)}/movies`}>
-                  Favorite Movies
-                </Nav.Link>
                 <Nav.Link onClick={onLoggedOut}>
                   Logout
                 </Nav.Link>

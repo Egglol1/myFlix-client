@@ -13,12 +13,12 @@ export const FavoriteMovies = ({ user, favoriteMovies, handleFavoriteToggle, fav
       </Row>
       <Row className="justify-content-md-center mt-5">
         {favoriteMovieList.map((movie) => (
-          <Col className="mb-5" key={movie.id} xs = {12} md={6} lg={3}>
+          <Col className="mb-5" key={movie._id} xs = {12} md={6} lg={3}>
             <MovieCard
               movie={movie}
-              isFavorite={favoriteMovies.includes(String(movie.id))} // Assumes favoriteMovies is an array of movie IDs
+              isFavorite={favoriteMovies.includes(String(movie._id))} // Assumes favoriteMovies is an array of movie IDs
               onFavoriteToggle={handleFavoriteToggle}
-              username={user.username}
+              username={user.Username}
             />
           </Col>
         ))}{" "}
