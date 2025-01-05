@@ -3,8 +3,6 @@ import { Button, Card } from "react-bootstrap";
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
 
-import "./movie-card.scss";
-
 export const MovieCard = ({ movie, isFavorite, onFavoriteToggle }) => {
   const [isFav, setIsFav] = useState(isFavorite);
 
@@ -14,7 +12,7 @@ export const MovieCard = ({ movie, isFavorite, onFavoriteToggle }) => {
   };
 
   return (
-    <Card clasName="h-100">
+    <Card className = "h-100">
       <Card.Img variant="top" src={movie.image} />
       <Card.Body>
         <Card.Title>{movie.title}</Card.Title>
