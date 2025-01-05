@@ -1,9 +1,11 @@
+//USERID LOGGED AS UNDEFINED
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import UserInfo from "./user-info";
-import DeleteAccountButton from "./DeleteAccountButton";
-import FavoriteMovies from "./favorite-movies";
-import UpdateUser from "./update-user";
+import {UserInfo} from "./user-info";
+import {DeregisterButton} from "./deregister-button";
+import {FavoriteMovies} from "./favorite-movies";
+import {UpdateUser} from "./update-user";
 import { Card, Container, Row, Col } from "react-bootstrap";
 
 export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle, setFavoriteMovies}) => {
@@ -12,11 +14,13 @@ export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle,
   const [editedUser, setEditedUser] = useState(null);
   const storedToken = localStorage.getItem("token");
   const [token, setToken] = useState(storedToken);
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [movies, setMovies] = useState([]);
 
   // Find user by ID
+  console.log("Users: ", users);
+  console.log("userId", userId);
   const user = users.find((u) => u.userId === userId);
+  console.log("User1: ", user);
 
   useEffect(() => {
     if (user) {
@@ -48,7 +52,6 @@ export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle,
       })
       .catch((error) => {
         console.error("Error fetching movies:", error);
-        setError(error.message);
       });
   }, [token]);
 
@@ -74,7 +77,7 @@ export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle,
   const handleSaveClick = async () => {
     try {
       const response = await fetch(
-        `https://movie-api-x3ci.onrender.com/users/${user.username}`,
+        `https://movie-api-x3ci.onrender.com/user/${user.username}`,
         {
           method: "PUT",
           headers: {
@@ -102,6 +105,7 @@ export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle,
   };
 
   if (!user) {
+    console.log("User: ", user)
     return <div>User not found</div>;
   }
 
@@ -109,11 +113,10 @@ export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle,
     <>
       <Container>
         <Row>
-          
           <Col xs={12} sm={4}>
           <Card>
             <Card.Body>
-            <UserInfo name={user.username} email={user.email} birthday={user.birthday}/>
+            <UserInfo name={user.Username} email={user.email} birthday={user.birthday}/>
             </Card.Body>
             </Card>
           </Col>
@@ -134,7 +137,7 @@ export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle,
             <hr/>
             <h3>Delete Account</h3>
             <DeregisterButton
-          username={user.username}
+          username={user.Username}
           token={token}
           onLoggedOut={onLoggedOut}
         />
