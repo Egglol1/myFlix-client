@@ -6,12 +6,12 @@ import './movie-view.scss';
 export const MovieView = ({ movie, onBackClick }) => {
   const { movieId } = useParams();
 
-  movie = movies.find((m) => m.id === movieId)
+  movie = movie.find((m) => m.id === movieId)
 
   return (
     <div>
       <div>
-        <img class="w-100" src={movie.image} />
+        <img className="w-100" src={movie.image} />
       </div>
       <div>
         <span>Title: </span>
