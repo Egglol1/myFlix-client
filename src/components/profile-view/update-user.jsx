@@ -23,7 +23,7 @@ export const UpdateUser =({user, handleChange, handleSaveClick, handleEditClick,
         <Form.Label>Username</Form.Label>
         <Form.Control
           name="username"
-          value={isEditing ? editedUser.username : user.username}
+          value={isEditing ? editedUser.Username : user.Username}
           onChange={handleChange}
           disabled={!isEditing}
         />

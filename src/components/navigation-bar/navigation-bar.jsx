@@ -1,10 +1,12 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const NavigationBar = ({user, onLoggedOut}) => {
+  const navigate = useNavigate();
+
   const handleProfileClick = (event) => {
     event.preventDefault();
-    useNavigate(`/users/${encodeURIComponent(user._id)}`);
+    navigate(`/user/${encodeURIComponent(user._id)}`);
     window.location.reload();
   }
 
@@ -34,12 +36,12 @@ export const NavigationBar = ({user, onLoggedOut}) => {
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
-                  to={`/users/${encodeURIComponent(user._id)}`}
+                  to={`/user/${encodeURIComponent(user._id)}`}
                   onClick={handleProfileClick}
                 >
                   Profile
                 </Nav.Link>
-                <Nav.Link as={Link} to="/favoritemovies">
+                <Nav.Link as={Link} to={`/user/${encodeURIComponent(user.Username)}/movies`}>
                   Favorite Movies
                 </Nav.Link>
                 <Nav.Link onClick={onLoggedOut}>

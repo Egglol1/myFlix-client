@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-export const DeregisterButton = ({ username, token, onLoggedOut }) => {
+export const DeregisterButton = ({ Username, token, onLoggedOut }) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const storedToken = localStorage.getItem("token");
@@ -10,7 +10,7 @@ export const DeregisterButton = ({ username, token, onLoggedOut }) => {
   const handleDeregisterClick = async () => {
     try {
       const response = await fetch(
-        `https://movie-api-x3ci.onrender.com/users/${username}`, 
+        `https://movie-api-x3ci.onrender.com/user/${Username}`, 
         {
           method: "DELETE",
           headers: {
