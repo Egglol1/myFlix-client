@@ -1,5 +1,3 @@
-//just installed axios, run parcel first
-
 import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
@@ -10,9 +8,6 @@ import { ProfileView } from "../profile-view/profile-view";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { FavoriteMovies } from '../profile-view/favorite-movies';
-
-import axios from "axios";
 
 export const MainView = () => {
   console.log(localStorage.getItem("user"));
@@ -22,47 +17,6 @@ export const MainView = () => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [user, setUser] = useState(storedUser);
   const [token, setToken] = useState(storedToken);
-  const [users, setUsers] = useState([])
-
-  const handleFavoriteToggle = async (movieId, isFavorite) => {
-    const storedToken = localStorage.getItem("token");
-    const username = user.username; // Adjust this if user identification is different
-
-    try {
-      const authHeader = {
-        Authorization: `Bearer ${storedToken}`,
-      };
-
-      if (isFavorite) {
-        await axios.post(
-          `https://movie-api-4o5a.onrender.com/user/${username}/movies/${movieId}`,
-          {},
-          { authHeader }
-        );
-        const user = JSON.parse(localStorage.getItem('user'));
-        user.favorite_movies.push(movieId);
-        localStorage.setItem('user', JSON.stringify(user));
-        setFavoriteMovies([...user.favorite_movies]);
-
-        
-      } else {
-        await axios.delete(
-          `https://movie-api-4o5a.onrender.com/user/${username}/movies/${movieId}`,
-          { authHeader }
-        );
-        const user = JSON.parse(localStorage.getItem('user'));
-        const favorites = user.favorite_movies.filter((id) => id !== movieId);
-        user.favorite_movies = [...favorites];
-        localStorage.setItem('user', JSON.stringify(user));
-        setFavoriteMovies([...favorites]);
-       
-      }
-
-      // Re-fetch or update local state to reflect changes
-    } catch (error) {
-      console.error("Error updating favorite status:", error);
-    }
-  };
 
   useEffect(() => {
     if (!token) return;
@@ -85,41 +39,16 @@ export const MainView = () => {
 
         setMovies(moviesFromApi);
       });
-
-      fetch("https://movie-api-x3ci.onrender.com/user", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Users Data: ", data)
-        const usersFromApi = data.map((user) => ({
-          userId: user._id,
-          username: user.Username,
-          password: user.Password,
-          email: user.Email,
-          birthday: user.Birthday,
-          favoriteMovies: user.Favorites || [],
-        }));
-        setUsers(usersFromApi);
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-      });
   }, [token]);
   
     return (
       <BrowserRouter>
-      <NavigationBar
-        user={user}
-        onLoggedOut={() => {
-          setUser(null);
-        }}
-      />
+        <NavigationBar
+          user={user}
+          onLoggedOut={() => {
+            setUser(null);
+          }}
+        />
         <Row>
           <Routes>
             <Route
@@ -178,10 +107,9 @@ export const MainView = () => {
               ) : (
                 <Col>
                   <ProfileView
-                    users={users}
                     favoriteMovies={favoriteMovies}
-                    handleFavoriteToggle={handleFavoriteToggle}
                     setFavoriteMovies={setFavoriteMovies}
+                    movies={movies}
                   />
                 </Col>
               )
@@ -202,7 +130,6 @@ export const MainView = () => {
                       <MovieCard 
                         movie={movie}
                         isFavorite={favoriteMovies.includes(String(movie._id))}
-                        onFavoriteToggle={(handleFavoriteToggle)}
                        />
                     </Col>
                   ))}

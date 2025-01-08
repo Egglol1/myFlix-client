@@ -1,14 +1,7 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const NavigationBar = ({user, onLoggedOut}) => {
-  const navigate = useNavigate();
-
-  const handleProfileClick = (event) => {
-    event.preventDefault();
-    navigate(`/user/${encodeURIComponent(user._id)}`);
-    window.location.reload();
-  }
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -37,7 +30,6 @@ export const NavigationBar = ({user, onLoggedOut}) => {
                 <Nav.Link
                   as={Link}
                   to={`/user/${encodeURIComponent(user._id)}`}
-                  onClick={handleProfileClick}
                 >
                   Profile
                 </Nav.Link>

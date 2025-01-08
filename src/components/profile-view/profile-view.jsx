@@ -1,157 +1,190 @@
-//USERID LOGGED AS UNDEFINED
+import React, { useState, useEffect, } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { Row, Col } from "react-bootstrap";
+import { MovieCard } from "../movie-card/movie-card";
 
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import {UserInfo} from "./user-info";
-import {DeregisterButton} from "./deregister-button";
-import {FavoriteMovies} from "./favorite-movies";
-import {UpdateUser} from "./update-user";
-import { Card, Container, Row, Col } from "react-bootstrap";
+export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
+  const [userData, setUserData] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const navigate = useNavigate();
 
-export const ProfileView = ({ users = [],  favoriteMovies, handleFavoriteToggle, setFavoriteMovies}) => {
-  const { userId } = useParams();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState(null);
-  const storedToken = localStorage.getItem("token");
-  const [token, setToken] = useState(storedToken);
-  const [movies, setMovies] = useState([]);
-
-  // Find user by ID
-  console.log("Users: ", users);
-  console.log("userId", userId);
-  const user = users.find((u) => u.userId === userId);
-  console.log("User1: ", user);
-
+console.log(userData);
   useEffect(() => {
-    if (user) {
-      setFavoriteMovies(user.favoriteMovies);
+    if (user && token) {
+      fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => response.json())
+        console.log("Response: ", response)
+        .then((data) => {
+          setUserData("User Data: ", data);
+          setUsername(data.Username);
+          setEmail(data.Email);
+          setBirthday(data.Birthday);
+          setFavoriteMovies(data.FavoriteMovies || []);
+          console.log(userData);
+        })
+        .catch((error) => console.error("Error fetching user data", error));
     }
-  }, [user]);
+  }, [user, token]);
 
-  useEffect(() => {
-    if (!token) return;
-    fetch("https://movie-api-x3ci.onrender.com/movies", {
+  const handleUpdate = (event) => {
+    event.preventDefault();
+
+    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("Profile updated successfully!");
+        } else {
+          alert("Failed to update profile");
+        }
+      })
+      .catch((error) => console.error("Error updating profile", error));
+  };
+
+  const handleDelete = () => {
+    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}`, {
+      method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error. Status: ${response.status}`);
+        if (response.ok) {
+          onLoggedOut();
+          navigate("/");
+        } else {
+          alert("Failed to delete the profile");
         }
-        return response.json();
       })
-      .then((data) => {
-        const moviesFromApi = data.map((movie) => ({
-          id: movie._id,
-          title: movie.title,
-          image: movie.imageurl,
-          directors: movie.directors?.[0]?.name || "Director not found",
-          genre: movie.genre?.name || "Genre not found",
-          description: movie.description
-        }));
-        setMovies(moviesFromApi);
-      })
-      .catch((error) => {
-        console.error("Error fetching movies:", error);
-      });
-  }, [token]);
-
-  const favoriteMovieList = movies.filter(
-    (m) => favoriteMovies.includes(String(m.id)) // Converts m.id to string
-  );
-
-  // Initialize editedUser with user data when switching to edit mode
-  const handleEditClick = () => {
-    setIsEditing(true);
-    setEditedUser({ ...user });
+      .catch((error) => console.error("Error deleting profile", error));
   };
 
-  // Handle input changes
-  const handleChange = (e) => {
-    setEditedUser({
-      ...editedUser,
-      [e.target.name]: e.target.value
-    });
+  const favoriteMoviesList = movies.filter((m) => favoriteMovies.includes(m._id)) || [];
+
+  const handleAddFavorite = (movieId) => {
+    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}` },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setFavoriteMovies(data.FavoriteMovies || []);
+    })
+    .catch((error) => console.error("Error adding to favorites", error));
   };
 
-  // Handle save action
-  const handleSaveClick = async () => {
-    try {
-      const response = await fetch(
-        `https://movie-api-x3ci.onrender.com/user/${user.username}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(editedUser),
-        }
-      );
-
-      // Update the user data in local state after successful response
-      Object.assign(user, editedUser);
-
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
+  const handleRemoveFavorite = (movieId) => {
+    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
+      method: "DELETE",
+      headers: {Authorization: `Bearer ${token}` },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setFavoriteMovies(data.FavoriteMovies);
+    })
+    .catch((error) => console.error("Error removing from favorites", error));
   };
 
-  const onLoggedOut = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.clear();
-    window.location.reload();
-  };
-
-  if (!user) {
-    console.log("User: ", user)
-    return <div>User not found</div>;
-  }
+  console.log(userData);
+  if (!userData) return <div>Loading profile...</div>;
 
   return (
-    <>
-      <Container>
+    <div className="profile-view">
+      <Row>
+        <Col md={6}>
+          <h3>Profile Details</h3>
+          <p>Username: {userData.Username}</p>
+          <p>Email: {userData.Email}</p>
+          <p>Birthday: {userData.Birthday}</p>
+
+          <Form onSubmit={handleUpdate}>
+            <Form.Group controlId="updateUsername">
+              <Form.Label>Username:</Form.Label>
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                minLength="3"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="updatePassword">
+              <Form.Label>Password:</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="updateEmail">
+              <Form.Label>Email:</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="updateBirthday">
+              <Form.Label>Birthday:</Form.Label>
+              <Form.Control
+                type="date"
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button type="submit">Update Profile</Button>
+          </Form>
+
+          <Button variant="danger" onClick={handleDelete}>
+            Delete Profile
+          </Button>
+        </Col>
+
+       <Col md={6}>
+       <h3>Favorite Movies</h3>
+       {favoriteMovies.length === 0 ? (
+        <p>No Favorite Movies yet.</p>
+       ) : (
         <Row>
-          <Col xs={12} sm={4}>
-          <Card>
-            <Card.Body>
-            <UserInfo name={user.Username} email={user.email} birthday={user.birthday}/>
-            </Card.Body>
-            </Card>
-          </Col>
-          <Col xs={12} sm={8}>
-          <Card>
-          <Card.Body>
-            <UpdateUser
-              user={user}
-              handleChange={handleChange}
-              handleSaveClick={handleSaveClick}
-              handleEditClick={handleEditClick}
-              isEditing={isEditing}
-              editedUser={editedUser}
-            />
-            </Card.Body>
-            </Card>
-            
-            <hr/>
-            <h3>Delete Account</h3>
-            <DeregisterButton
-          username={user.Username}
-          token={token}
-          onLoggedOut={onLoggedOut}
-        />
-          </Col>
+          {favoriteMoviesList.map((movie) => (
+            <Col key={movie._id} md={4} className="mb-4">
+              <MovieCard movie={movie}
+              isFavorite={favoriteMovies.includes(movie._id)}
+              handleAddFavorite={handleAddFavorite}
+              handleRemoveFavorite={handleRemoveFavorite}
+              />
+            </Col>
+          ))}
         </Row>
-        
-        <hr />
-        <FavoriteMovies
-          user={user}
-          favoriteMovies={favoriteMovies}
-          handleFavoriteToggle={handleFavoriteToggle}
-          favoriteMovieList={favoriteMovieList}
-        />
-      </Container>
-    </>
+       )}
+       </Col>
+      </Row>
+    </div>
   );
 };
