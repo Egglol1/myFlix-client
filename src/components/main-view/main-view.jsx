@@ -18,6 +18,32 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser);
   const [token, setToken] = useState(storedToken);
 
+  const handleAddFavorite = (movieId) => {
+    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}` },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setFavoriteMovies(data.FavoriteMovies || []);
+    })
+    .catch((error) => console.error("Error adding to favorites", error));
+  };
+
+  const handleRemoveFavorite = (movieId) => {
+    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
+      method: "DELETE",
+      headers: {Authorization: `Bearer ${token}` },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setFavoriteMovies(data.FavoriteMovies);
+    })
+    .catch((error) => console.error("Error removing from favorites", error));
+  };
+  
   useEffect(() => {
     if (!token) return;
 
@@ -93,7 +119,8 @@ export const MainView = () => {
                 <Col>The list is Empty!</Col>
               ) : (
                 <Col md={8}>
-                  <MovieView movie={movies} />
+                  <MovieView movie={movies}
+                  />
                 </Col>
               )}
               </>
@@ -107,9 +134,12 @@ export const MainView = () => {
               ) : (
                 <Col>
                   <ProfileView
+                    user={user}
+                    token={token}
                     favoriteMovies={favoriteMovies}
                     setFavoriteMovies={setFavoriteMovies}
                     movies={movies}
+                    setUser={(updatedUser) => dispatchEvent(setUser(updatedUser))}
                   />
                 </Col>
               )
@@ -130,6 +160,8 @@ export const MainView = () => {
                       <MovieCard 
                         movie={movie}
                         isFavorite={favoriteMovies.includes(String(movie._id))}
+                        handleAddFavorite={handleAddFavorite}
+                        handleRemoveFavorite={handleRemoveFavorite}
                        />
                     </Col>
                   ))}
