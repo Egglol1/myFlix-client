@@ -1,8 +1,6 @@
 import React, { useState, useEffect, } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Form, Button } from "react-bootstrap";
 import { MovieCard } from "../movie-card/movie-card";
 
 export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
@@ -14,7 +12,6 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const navigate = useNavigate();
 
-console.log(userData);
   useEffect(() => {
     if (user && token) {
       fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}`, {
@@ -22,9 +19,8 @@ console.log(userData);
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((response) => response.json())
-        console.log("Response: ", response)
         .then((data) => {
-          setUserData("User Data: ", data);
+          setUserData(data);
           setUsername(data.Username);
           setEmail(data.Email);
           setBirthday(data.Birthday);
