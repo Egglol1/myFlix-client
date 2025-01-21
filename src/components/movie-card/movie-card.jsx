@@ -9,9 +9,9 @@ export const MovieCard = ({ movie, handleAddFavorite, handleRemoveFavorite, isFa
   const movieId = useParams();
   const handleFavoriteToggle = () => {
     if (isFavorite) {
-      handleRemoveFavorite(movie._id);
+      handleRemoveFavorite(movie.id);
     } else {
-      handleAddFavorite(movie._id);
+      handleAddFavorite(movie.id);
     }
   };
 
