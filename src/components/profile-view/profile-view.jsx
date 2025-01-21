@@ -24,7 +24,7 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
           setUsername(data.Username);
           setEmail(data.Email);
           setBirthday(data.Birthday);
-          setFavoriteMovies(data.FavoriteMovies || []);
+          setFavoriteMovies(data.Favorites || []);
           console.log(userData);
         })
         .catch((error) => console.error("Error fetching user data", error));
@@ -73,7 +73,7 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
       .catch((error) => console.error("Error deleting profile", error));
   };
 
-  const favoriteMoviesList = movies.filter((m) => favoriteMovies.includes(m._id)) || [];
+  const favoriteMoviesList = movies.filter((m) => favoriteMovies.includes(m.id)) || [];
 
   const handleAddFavorite = (movieId) => {
     fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
@@ -84,7 +84,7 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
     })
     .then((response) => response.json())
     .then((data) => {
-      setFavoriteMovies(data.FavoriteMovies || []);
+      setFavoriteMovies(data.Favorites || []);
     })
     .catch((error) => console.error("Error adding to favorites", error));
   };
@@ -96,7 +96,7 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
     })
     .then((response) => response.json())
     .then((data) => {
-      setFavoriteMovies(data.FavoriteMovies);
+      setFavoriteMovies(data.Favorites);
     })
     .catch((error) => console.error("Error removing from favorites", error));
   };
@@ -169,9 +169,9 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
        ) : (
         <Row>
           {favoriteMoviesList.map((movie) => (
-            <Col key={movie._id} md={4} className="mb-4">
+            <Col key={movie.id} md={4} className="mb-4">
               <MovieCard movie={movie}
-              isFavorite={favoriteMovies.includes(movie._id)}
+              isFavorite={favoriteMovies.includes(movie.id)}
               handleAddFavorite={handleAddFavorite}
               handleRemoveFavorite={handleRemoveFavorite}
               />
