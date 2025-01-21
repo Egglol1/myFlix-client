@@ -27469,9 +27469,9 @@ const MainView = ()=>{
                                             md: 3,
                                             children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieCard.MovieCard), {
                                                 movie: movie,
-                                                isFavorite: favoriteMovies.includes(String(movie._id)),
                                                 handleAddFavorite: handleAddFavorite,
-                                                handleRemoveFavorite: handleRemoveFavorite
+                                                handleRemoveFavorite: handleRemoveFavorite,
+                                                isFavorite: favoriteMovies.includes(String(movie._id))
                                             }, void 0, false, {
                                                 fileName: "src/components/main-view/main-view.jsx",
                                                 lineNumber: 160,
@@ -27540,8 +27540,8 @@ const MovieCard = ({ movie, handleAddFavorite, handleRemoveFavorite, isFavorite 
     _s();
     const movieId = (0, _reactRouter.useParams)();
     const handleFavoriteToggle = ()=>{
-        if (isFavorite) handleRemoveFavorite(movie._id);
-        else handleAddFavorite(movie._id);
+        if (isFavorite) handleRemoveFavorite(movie.id);
+        else handleAddFavorite(movie.id);
     };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card), {
         className: "h-100",
@@ -42793,7 +42793,7 @@ const ProfileView = ({ movies = [], user, token, onLoggedOut })=>{
             setUsername(data.Username);
             setEmail(data.Email);
             setBirthday(data.Birthday);
-            setFavoriteMovies(data.FavoriteMovies || []);
+            setFavoriteMovies(data.Favorites || []);
             console.log(userData);
         }).catch((error)=>console.error("Error fetching user data", error));
     }, [
@@ -42832,7 +42832,7 @@ const ProfileView = ({ movies = [], user, token, onLoggedOut })=>{
             } else alert("Failed to delete the profile");
         }).catch((error)=>console.error("Error deleting profile", error));
     };
-    const favoriteMoviesList = movies.filter((m)=>favoriteMovies.includes(m._id)) || [];
+    const favoriteMoviesList = movies.filter((m)=>favoriteMovies.includes(m.id)) || [];
     const handleAddFavorite = (movieId)=>{
         fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
             method: "POST",
@@ -42841,7 +42841,7 @@ const ProfileView = ({ movies = [], user, token, onLoggedOut })=>{
                 Authorization: `Bearer ${token}`
             }
         }).then((response)=>response.json()).then((data)=>{
-            setFavoriteMovies(data.FavoriteMovies || []);
+            setFavoriteMovies(data.Favorites || []);
         }).catch((error)=>console.error("Error adding to favorites", error));
     };
     const handleRemoveFavorite = (movieId)=>{
@@ -42851,7 +42851,7 @@ const ProfileView = ({ movies = [], user, token, onLoggedOut })=>{
                 Authorization: `Bearer ${token}`
             }
         }).then((response)=>response.json()).then((data)=>{
-            setFavoriteMovies(data.FavoriteMovies);
+            setFavoriteMovies(data.Favorites);
         }).catch((error)=>console.error("Error removing from favorites", error));
     };
     console.log(userData);
@@ -43065,7 +43065,7 @@ const ProfileView = ({ movies = [], user, token, onLoggedOut })=>{
                                     className: "mb-4",
                                     children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieCard.MovieCard), {
                                         movie: movie,
-                                        isFavorite: favoriteMovies.includes(movie._id),
+                                        isFavorite: favoriteMovies.includes(movie.id),
                                         handleAddFavorite: handleAddFavorite,
                                         handleRemoveFavorite: handleRemoveFavorite
                                     }, void 0, false, {
@@ -43073,7 +43073,7 @@ const ProfileView = ({ movies = [], user, token, onLoggedOut })=>{
                                         lineNumber: 173,
                                         columnNumber: 15
                                     }, undefined)
-                                }, movie._id, false, {
+                                }, movie.id, false, {
                                     fileName: "src/components/profile-view/profile-view.jsx",
                                     lineNumber: 172,
                                     columnNumber: 13
