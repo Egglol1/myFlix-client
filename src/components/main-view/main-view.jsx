@@ -159,9 +159,9 @@ export const MainView = () => {
                     <Col className="mb-4" key={movie.id} md={3}>
                       <MovieCard 
                         movie={movie}
-                        isFavorite={favoriteMovies.includes(String(movie._id))}
                         handleAddFavorite={handleAddFavorite}
                         handleRemoveFavorite={handleRemoveFavorite}
+                        isFavorite={favoriteMovies.includes(String(movie._id))}
                        />
                     </Col>
                   ))}
