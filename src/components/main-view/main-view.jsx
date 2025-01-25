@@ -158,7 +158,7 @@ export const MainView = () => {
                 <Row>
                   {filteredMovies.map((movie) => (
                     <Col
-                      classNmae="mb-5"
+                      className="mb-5"
                       key={movie.id}
                       xs={12}
                       sm={6}
