@@ -5,8 +5,7 @@ import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { ProfileView } from "../profile-view/profile-view";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import {Col, Row, Form, InputGroup} from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 export const MainView = () => {
@@ -17,6 +16,7 @@ export const MainView = () => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [user, setUser] = useState(storedUser);
   const [token, setToken] = useState(storedToken);
+  const [filter, setFilter] = useState("");
 
   const handleAddFavorite = (movieId) => {
     fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
@@ -66,7 +66,24 @@ export const MainView = () => {
         setMovies(moviesFromApi);
       });
   }, [token]);
+
+  const getSimilarMovies = (movieId) => {
+    const currentMovie = movies.find((movie) => movie.id === movieId);
+    if (!currentMovie) return [];
+    return movies.filter(
+      (movie) =>
+        movie.genre.name === currentMovie.genre.name && movie.id !== movieId
+    );
+  };
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
   
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(filter.toLowerCase())
+  );
+
     return (
       <BrowserRouter>
         <NavigationBar
@@ -109,6 +126,44 @@ export const MainView = () => {
 
             }
             />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Form className="filter-form mb-4">
+                    <Form.Group controlId="filter">
+                      <Form.Label className="form-label-dark"></Form.Label>
+                      <InputGroup>
+                      <InputGroup.Text>
+                      <i className="bi bi-search"></i>{" "}
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="text"
+                        placeholder="Start typing to filter..."
+                        value={filter}
+                        onChange={handleFilterChange}
+                        className="form-control-dark"
+                      />
+                      </InputGroup>
+                    </Form.Group>
+                  </Form>
+                  <Row>
+                    {filteredMovies.map((movie) => (
+                      <Col
+                        classNmae="mb-5"
+                        key={movie.id}
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={3}
+                      >
+                        <MovieCard movie={movie}/>
+                      </Col>
+                    ))}
+                  </Row>
+                </>
+              }
+            />
           <Route
             path="movies/:movieId"
             element={
@@ -119,7 +174,12 @@ export const MainView = () => {
                 <Col>The list is Empty!</Col>
               ) : (
                 <Col md={8}>
-                  <MovieView movie={movies}
+                  <MovieView 
+                  movie={movies}
+                  getSimilarMovies={getSimilarMovies}
+                  user={user}
+                  setUser={setUser}
+                  token={token}
                   />
                 </Col>
               )}
