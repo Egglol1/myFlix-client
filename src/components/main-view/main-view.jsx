@@ -135,7 +135,7 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/"
+            path="/movies"
             element={
               <>
                 <Form className="filter-form mb-4">
