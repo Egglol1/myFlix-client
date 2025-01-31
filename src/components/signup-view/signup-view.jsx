@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 export const SignupView = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -15,22 +15,22 @@ export const SignupView = () => {
       Username: username,
       Password: password,
       Email: email,
-      Birthday: birthday
+      Birthday: birthday,
     };
 
-    fetch("https://movie-api-x3ci.onrender.com/user", {
-      method: "POST",
+    fetch('https://movie-api-x3ci.onrender.com/user', {
+      method: 'POST',
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/json',
+      },
     }).then((response) => {
-      console.log("Response: ", response)
+      console.log('Response: ', response);
       if (response.ok) {
-        alert("Signup successful");
+        alert('Signup successful');
         window.location.reload();
       } else {
-        alert("Signup failed");
+        alert('Signup failed');
       }
     });
   };
@@ -44,7 +44,7 @@ export const SignupView = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          minLength="3" 
+          minLength="3"
         />
       </Form.Group>
 
@@ -65,19 +65,19 @@ export const SignupView = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          />
+        />
       </Form.Group>
 
       <Form.Group controlId="formBirthday">
         <Form.Label>Birthday:</Form.Label>
         <Form.Control
-        type="date"
-        value={birthday}
-        onChange={(e) => setBirthday(e.target.value)}
-        required
+          type="date"
+          value={birthday}
+          onChange={(e) => setBirthday(e.target.value)}
+          required
         />
       </Form.Group>
-      
+
       <Button variant="primary" type="submit">
         Submit
       </Button>

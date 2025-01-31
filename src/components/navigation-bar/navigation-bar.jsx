@@ -1,8 +1,7 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-export const NavigationBar = ({user, onLoggedOut}) => {
-
+export const NavigationBar = ({ user, onLoggedOut }) => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -22,9 +21,9 @@ export const NavigationBar = ({user, onLoggedOut}) => {
                 </Nav.Link>
               </>
             )}
-            {user &&  user._id && (
+            {user && user._id && (
               <>
-                <Nav.Link as={Link} to="/">
+                <Nav.Link as={Link} to="/movies">
                   Home
                 </Nav.Link>
                 <Nav.Link
@@ -33,9 +32,7 @@ export const NavigationBar = ({user, onLoggedOut}) => {
                 >
                   Profile
                 </Nav.Link>
-                <Nav.Link onClick={onLoggedOut}>
-                  Logout
-                </Nav.Link>
+                <Nav.Link onClick={onLoggedOut}>Logout</Nav.Link>
               </>
             )}
           </Nav>

@@ -1,21 +1,21 @@
-import React, { useState, useEffect, } from "react";
-import { useNavigate } from "react-router-dom";
-import { Row, Col, Form, Button } from "react-bootstrap";
-import { MovieCard } from "../movie-card/movie-card";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Row, Col, Form, Button } from 'react-bootstrap';
+import { MovieCard } from '../movie-card/movie-card';
 
 export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
-  const [userData, setUserData] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [userData, setUserData] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user && token) {
       fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}`, {
-        method: "GET",
+        method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((response) => response.json())
@@ -27,7 +27,7 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
           setFavoriteMovies(data.Favorites || []);
           console.log(userData);
         })
-        .catch((error) => console.error("Error fetching user data", error));
+        .catch((error) => console.error('Error fetching user data', error));
     }
   }, [user, token]);
 
@@ -35,9 +35,9 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
     event.preventDefault();
 
     fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
@@ -49,56 +49,64 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
     })
       .then((response) => {
         if (response.ok) {
-          alert("Profile updated successfully!");
+          alert('Profile updated successfully!');
         } else {
-          alert("Failed to update profile");
+          alert('Failed to update profile');
         }
       })
-      .catch((error) => console.error("Error updating profile", error));
+      .catch((error) => console.error('Error updating profile', error));
   };
 
   const handleDelete = () => {
     fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
         if (response.ok) {
           onLoggedOut();
-          navigate("/");
+          navigate('/');
         } else {
-          alert("Failed to delete the profile");
+          alert('Failed to delete the profile');
         }
       })
-      .catch((error) => console.error("Error deleting profile", error));
+      .catch((error) => console.error('Error deleting profile', error));
   };
 
-  const favoriteMoviesList = movies.filter((m) => favoriteMovies.includes(m.id)) || [];
+  const favoriteMoviesList =
+    movies.filter((m) => favoriteMovies.includes(m.id)) || [];
 
   const handleAddFavorite = (movieId) => {
-    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}` },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setFavoriteMovies(data.Favorites || []);
-    })
-    .catch((error) => console.error("Error adding to favorites", error));
+    fetch(
+      `https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setFavoriteMovies(data.Favorites || []);
+      })
+      .catch((error) => console.error('Error adding to favorites', error));
   };
 
   const handleRemoveFavorite = (movieId) => {
-    fetch(`https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`, {
-      method: "DELETE",
-      headers: {Authorization: `Bearer ${token}` },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setFavoriteMovies(data.Favorites);
-    })
-    .catch((error) => console.error("Error removing from favorites", error));
+    fetch(
+      `https://movie-api-x3ci.onrender.com/user/${user.Username}/movies/${movieId}`,
+      {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setFavoriteMovies(data.Favorites);
+      })
+      .catch((error) => console.error('Error removing from favorites', error));
   };
 
   console.log(userData);
@@ -162,24 +170,25 @@ export const ProfileView = ({ movies = [], user, token, onLoggedOut }) => {
           </Button>
         </Col>
 
-       <Col md={6}>
-       <h3>Favorite Movies</h3>
-       {favoriteMovies.length === 0 ? (
-        <p>No Favorite Movies yet.</p>
-       ) : (
-        <Row>
-          {favoriteMoviesList.map((movie) => (
-            <Col key={movie.id} md={4} className="mb-4">
-              <MovieCard movie={movie}
-              isFavorite={favoriteMovies.includes(movie.id)}
-              handleAddFavorite={handleAddFavorite}
-              handleRemoveFavorite={handleRemoveFavorite}
-              />
-            </Col>
-          ))}
-        </Row>
-       )}
-       </Col>
+        <Col md={6}>
+          <h3>Favorite Movies</h3>
+          {favoriteMovies.length === 0 ? (
+            <p>No Favorite Movies yet.</p>
+          ) : (
+            <Row>
+              {favoriteMoviesList.map((movie) => (
+                <Col key={movie.id} md={4} className="mb-4">
+                  <MovieCard
+                    movie={movie}
+                    isFavorite={favoriteMovies.includes(movie.id)}
+                    handleAddFavorite={handleAddFavorite}
+                    handleRemoveFavorite={handleRemoveFavorite}
+                  />
+                </Col>
+              ))}
+            </Row>
+          )}
+        </Col>
       </Row>
     </div>
   );

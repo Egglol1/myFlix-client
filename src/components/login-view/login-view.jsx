@@ -1,10 +1,10 @@
-import React, {useState} from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import React, { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 export const LoginView = ({ onLoggedIn }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     //this prevents the default behavior of the form which is to reload the entire page
@@ -12,30 +12,31 @@ export const LoginView = ({ onLoggedIn }) => {
 
     const data = {
       Username: username,
-      Password: password
+      Password: password,
     };
 
-    fetch("https://movie-api-x3ci.onrender.com/login", {
-      method: "POST",
+    fetch('https://movie-api-x3ci.onrender.com/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
-    }).then((response) => response.json())
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
       .then((data) => {
-      console.log("Login response: ", data);
-      if (data.user) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token);
-        onLoggedIn(data.user, data.token);
-      } else {
-        alert("Login failed");
-      }
-    })
-    .catch((e) => {
-      alert("Something went wrong.");
-      console.log("Error: ", e)
-    })
+        console.log('Login response: ', data);
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('token', data.token);
+          onLoggedIn(data.user, data.token);
+        } else {
+          alert('Login failed');
+        }
+      })
+      .catch((e) => {
+        alert('Something went wrong.');
+        console.log('Error: ', e);
+      });
   };
 
   return (
@@ -47,7 +48,7 @@ export const LoginView = ({ onLoggedIn }) => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          minLength="3" 
+          minLength="3"
         />
       </Form.Group>
 
@@ -65,5 +66,4 @@ export const LoginView = ({ onLoggedIn }) => {
       </Button>
     </Form>
   );
-
 };
