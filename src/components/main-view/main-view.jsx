@@ -31,7 +31,7 @@ export const MainView = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setFavoriteMovies(data.FavoriteMovies || []);
+        setFavoriteMovies(data.Favorites || []);
       })
       .catch((error) => console.error('Error adding to favorites', error));
   };
@@ -46,7 +46,7 @@ export const MainView = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setFavoriteMovies(data.FavoriteMovies);
+        setFavoriteMovies(data.Favorites);
       })
       .catch((error) => console.error('Error removing from favorites', error));
   };
@@ -106,7 +106,7 @@ export const MainView = () => {
             element={
               <>
                 {user ? (
-                  <Navigate to="/" />
+                  <Navigate to="/movies" />
                 ) : (
                   <Col md={5}>
                     <SignupView />
@@ -120,7 +120,7 @@ export const MainView = () => {
             element={
               <>
                 {user ? (
-                  <Navigate to="/" />
+                  <Navigate to="/movies" />
                 ) : (
                   <Col md={5}>
                     <LoginView
@@ -186,7 +186,7 @@ export const MainView = () => {
                 ) : movies.length === 0 ? (
                   <Col>The list is Empty!</Col>
                 ) : (
-                  <Col md={8}>
+                  <Col key={movies.id} md={4} className="mb-4">
                     <MovieView
                       movie={movies}
                       getSimilarMovies={getSimilarMovies}
@@ -231,14 +231,12 @@ export const MainView = () => {
                 ) : (
                   <>
                     {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.id} md={3}>
+                      <Col key={movie.id} md={4} className="mb-4">
                         <MovieCard
                           movie={movie}
+                          isFavorite={favoriteMovies.includes(movies.id)}
                           handleAddFavorite={handleAddFavorite}
                           handleRemoveFavorite={handleRemoveFavorite}
-                          isFavorite={favoriteMovies.includes(
-                            String(movie._id)
-                          )}
                         />
                       </Col>
                     ))}
