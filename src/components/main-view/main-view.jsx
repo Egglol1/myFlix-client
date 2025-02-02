@@ -169,7 +169,7 @@ export const MainView = () => {
                         movie={movie}
                         handleAddFavorite={handleAddFavorite}
                         handleRemoveFavorite={handleRemoveFavorite}
-                        isFavorite={favoriteMovies.includes(String(movie._id))}
+                        isFavorite={favoriteMovies.includes(String(movie.id))}
                       />
                     </Col>
                   ))}
